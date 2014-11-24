@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+    <head lang="ko">
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <title>Login Page</title>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link href="main.css" rel="stylesheet" />
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+        <div class="container-fluid"> <!-- 컨텐츠 영역 시작 -->
+
+            <div class="row"> <!-- Column을 위한 row 시작 -->
+
+                <div class="col-md-6 col-md-offset-3"> <!-- 컨텐츠 Column 설정 -->
+
+                    <div class="panel panel-default"> <!-- 로그인 박스 생성 -->
+
+                        <div class="panel-heading"> <!-- 로그인 박스 제목 설정 -->
+
+                            <div class="panel-title text-center">Hello Geha Login</div>
+
+                        </div> <!-- 로그인 박스 제목 설정 끝 -->
+
+                        <div class="panel-body"> <!-- 로그인 박스 내용 시작 -->
+
+                            <form class="span4 form-horizontal login-box" method="post" action="../index.php" role="form" enctype="application/x-www-form-urlencoded"> <!-- 로그인 폼 시작 -->
+
+                                <div class="form-group"> <!-- 유저네임 입력부분 그룹 시작 -->
+
+                                    <div class="span4"> <!-- 유저네임 입력 폼 시작 -->
+
+                                        <input id="login-input-username" class="form-control" type="text" name="login-username" placeholder="Username or E-Mail" required /> <!-- 유저네임 입력 폼 -->
+
+                                    </div> <!-- 유저네임 입력 폼 끝 -->
+
+                                </div> <!-- 유저네임 입력부분 그룹 끝 -->
+
+                                <div class="form-group"> <!-- 패스워드 입력부분 그룹 시작 -->
+
+                                    <div class="span4"> <!-- 패스워드 입력 폼 시작 -->
+
+                                        <input id="login-input-password" class="form-control" type="password" name="login-password" placeholder="Password" required /> <!-- 패스워드 입력 폼 -->
+
+                                    </div> <!-- 패스워드 입력 폼 끝 -->
+
+                                </div> <!-- 패스워드 입력부분 그룹 끝 -->
+
+                                <div class="form-group"> <!-- 로그인 버튼부분 그룹 시작 -->
+
+                                    <div class="span4"> <!-- 로그인 버튼부분 버튼 시작 -->
+
+                                        <input type="submit" class="btn btn-primary" name="login" value="Login" /> <!-- 로그인 버튼 -->
+                                        <span class="login-other"><a href="find.html">Forgot your account?</a></span> <!-- 비번찾기 링크 -->
+
+                                    </div> <!-- 로그인 버튼부분 끝 -->
+
+                                    <input type="hidden" name="socialProvider" value="null" />
+
+                                    <div class="social-login span4"> <!-- 소셜 로그인 버튼부분 시작 -->
+
+                                        <div class="fb-root gSignInWrapper"> <!-- OAuth 로그인 부분 처리를 위한 div -->
+
+                                            <ul class="list-inline">
+
+                                                <a href="#" id="facebookLogin"><li class="social-login-btn facebook">Facebook</li></a>
+
+                                                <a href="#" id="kakaoLogin"><li class="social-login-btn kakaotalk">KakaoTalk</li></a>
+
+                                                <a href="#" id="googleLogin"><li class="social-login-btn google">Google+</li></a>
+
+                                            </ul>
+
+                                        </div> <!-- OAuth 로그인 부분 처리를 위한 div 끝 -->
+
+                                    </div> <!-- 소셜 로그인 버튼부분 끝 -->
+
+                                </div> <!-- 로그인 버튼부분 그룹 끝 -->
+
+                            </form> <!-- 폼 부분 끝 -->
+
+                        </div> <!-- 로그인 박스 내용 끝 -->
+
+                    </div> <!-- 로그인 박스 끝 -->
+
+                </div> <!-- 컨텐츠 Column 설정 끝 -->
+
+            </div> <!-- Column을 위한 row 끝 -->
+
+        </div> <!-- 컨텐츠 영역 끝 -->
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- 페이스북 로드 및 설정 -->
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '1593555764201789',
+                    xfbml      : true,
+                    version    : 'v2.1'
+                });
+            };
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        <!-- 페이스북 버튼 만들기 jQuery -->
+            $('#facebookLogin').click(function() {FB.login(); return false; });
+
+        </script>
+
+        <!-- 카카오톡 로드 -->
+        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+        <!-- 카카오톡 기본 설정 및 로그인 -->
+        <script>
+
+            // 앱 키
+            Kakao.init('e588d56c4059feade1d6cb0cb7fd82c7');
+
+            <!-- 카카오톡 버튼 만들기 jQuery -->
+            $('#kakaoLogin').click(function() { Kakao.Auth.login({
+                success: function(authObj) {
+                    alert(JSON.stringify(authObj));
+                },
+                fail: function(err) {
+                    alert(JSON.stringify(err))
+                }
+            }); return false; });
+
+        </script>
+
+        <!-- 구글 플러스 렌더러 로드 -->
+        <script src="https://apis.google.com/js/client:platform.js?onload=render" async defer></script>
+
+        <!-- 구글 플러스 버튼 랜더링 -->
+        <script>
+            function render() {
+                gapi.signin.render('googleLogin', {
+                    //'callback': 'signinCallback',
+                    'clientid': '1001349950034-pl948ncppkmrl4uk0ifalc5586ev8vrh.apps.googleusercontent.com',
+                    'cookiepolicy': 'single_host_origin',
+                    'requestvisibleactions': 'http://schema.org/AddAction',
+                    'scope': 'https://www.googleapis.com/auth/plus.login'
+                });
+            }
+
+            <!-- 그리고 jQuery 로 버튼 생성 -->
+           // $('#googleLogin').click(function() { gapi.auth.signIn(); return false;});
+        </script>
+
+    </body>
+
+</html>

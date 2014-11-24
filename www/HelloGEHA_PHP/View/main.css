@@ -1,0 +1,65 @@
+
+.login-box {
+
+    padding: 1.5em;
+
+}
+
+.login-other {
+
+    padding-left: 1.5em;
+
+}
+
+.social-login {
+
+    margin-top: 1.25em;
+    padding-top: 0.75em;
+
+    border-top: solid 1px #CCC;
+    text-align: center;
+
+}
+
+.social-login-btn {
+
+    display: inline-block;
+
+    border: solid 1px;
+    border-radius: 5px;
+
+    box-shadow: #222 0px 1px 2px;
+
+    height:40px;
+    width: 120px;
+
+    margin-right: 1.5em;
+    padding-left: 25px;
+
+    color: #FFF;
+    line-height: 37px;
+
+}
+
+.facebook {
+
+    border-color: #369;
+    background: #369 url(img/facebook.png) no-repeat left;
+
+}
+
+.kakaotalk {
+
+    border-color: #FF3;
+    background: #FF3 url(img/kakao.png) no-repeat left;
+
+    color: #000;
+
+}
+
+.google {
+
+    border-color: #C33;
+    background: #C33 url(img/google.png) no-repeat left;
+
+}
