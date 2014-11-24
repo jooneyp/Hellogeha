@@ -6,12 +6,17 @@
     define("database_name","test");
     define("user_table_name", "user");
 
+    /* E-Mail Settings */
+    define("admin_email", "hello@hellogeha.com");
+    define("login_address", "127.0.0.1/HGH/View/login.html");
+
     /* Login class start */
     class Login {
 
         /* SQL Queries */
         private $query_login    = "SELECT username, email, pass_hash FROM ".user_table_name." WHERE username = ? OR email = ? ;";
         private $query_recovery = "SELECT username, email FROM ".user_table_name." WHERE email = ? ;";
+        private $query_temp_pw  = "UPDATE ".user_table_name." SET pass_hash = ? WHERE email = ? ;";
 
         /* Creating database variables */
         private $db_con = null;
@@ -216,12 +221,39 @@
          *  @password:  패스워드 값 */
         private function sendPasswordEmail($address, $password) {
 
+            /* 이메일 헤더 작성 */
+            $headers =   'From: '.admin_email."\r\n"
+                        .'Reply-to: '.admin_email."\r\n"
+                        .'X-Mailer: FormMailer'."\r\n"
+                        .'MIME-Version: 1.0'."\r\n"
+                        .'Content-Type: text/html; charset=UTF-8'."\r\n"
+                        .'X-Priority: 1'."\r\n"
+                        .'X-MSMail-Priority: High'."\r\n"
+                        .'Content-Transfer-Encoding: base64';
 
+            /* 이메일 제목 작성 */
+            $subject = "=?UTF-8?B?".base64_encode("HelloGEHA Temporary password notification")."?=\n";
 
+            /* 이메일 컨텐츠 */
+            $contents = '
+                        <html>
+                        <head>
+                          <title>HelloGEHA Temporary password notification.</title>
+                        </head>
+                        <body>
+                          <h2>Your temporary password is: </h2>'.$password.'
+                          <h3>You can login in <a href="'.login_address.'">here</a>.</h3>
+                        </body>
+                        </html>
+                        ';
 
+            $message = base64_encode($contents);
+
+            flush();
+
+            return mail($address, $subject, $message, $headers);
 
         }
-
 
         /* Login - Generic */
         private function doLogin() {
@@ -294,7 +326,6 @@
                                 $_SESSION['username'] = $result_obj->username;
                                 $_SESSION['email'] = $result_obj->email;
                                 $_SESSION['is_Logged_in'] = true;
-
 
                             } else {
 
@@ -379,7 +410,7 @@
         public function chkLoginStat() {
 
             /* If there have a session named is_Logged_in and the session's value is true it means user is logged in*/
-            if((isset($_SESSION['is_Logged_in']) == 1) && ($_SESSION['is_Logged_in'] == true)) {
+            if((isset($_SESSION['is_Logged_in']) == true) && ($_SESSION['is_Logged_in'] == true)) {
 
                 return true;
 
@@ -415,7 +446,7 @@
                 $this->errorCode   = -15;
 
                 /* error variable will tell you what is error */
-                $this->error[]     = "Wrong E-Mail type.";
+                $this->error[]     = "Wrong E-Mail data.";
 
                 /* close connection */
                 $this->close();
@@ -450,12 +481,59 @@
                         /* If there have a matching E-Mail, it will return 1 */
                         if($this->db_rs->num_rows == 1) {
 
-                            echo"Find!";
-                            echo "<br />";
+                            /* Save the results data in variable as object */
+                            $result_obj = $this->db_rs->fetch_object();
 
-                            echo $this->generatePassword(12);
+                            $generatedPW = $this->generatePassword(12);
+                            $email       = $result_obj->email;
 
-                            echo "<br />";
+                            if($this->sendPasswordEmail($email, $generatedPW)) {
+
+                                $pass_hash = password_hash($generatedPW, PASSWORD_DEFAULT);
+
+                                /* Make prepared statement */
+                                $this->db_st = $this->db_con->prepare($this->query_temp_pw);
+
+                                /* bind parameters */
+                                $this->db_st->bind_Param("ss", $pass_hash, $email);
+
+                                /* AND QUERY IT!! (also save the query state in variable) */
+                                $execute_result = $this->db_st->execute();
+
+                                /* Check Query executed nicely */
+                                if($execute_result) {
+
+                                    /* FOR DEBUG */
+                                    echo "Done! PW-Hash: ".$pass_hash;
+
+                                    /* ON SERVICE */
+                                    /* header("Location: ./View/login.html");*/
+
+                                } else {
+
+                                    /* If query didn't execute nicely */
+                                    $this->error[] = "Cannot execute Query!";
+
+                                    /* Set ErrorCode */
+                                    $this->errorCode   = -3;
+
+                                    /* FOR DEBUG */
+                                    die($this->error);
+
+                                    /* ON SERVICE */
+                                    /* header("Location: 505.html");*/
+
+                                }
+
+                            } else {
+
+                                /* Set ErrorCode */
+                                $this->errorCode   = -16;
+
+                                /* error variable will tell you what is error */
+                                $this->error[]     = "Failed to send E-Mail.";
+
+                            }
 
                         } else {
 
