@@ -166,53 +166,67 @@
 
         }
 
-        /* Password Generate */
+        /* Password Generate - Old One - Renewed to MD5 see under */
+//        private function generatePassword($length) {
+//
+//            /* setting random seed */
+//            srand(time(null));
+//
+//            /* Results */
+//            $generatedPassword = "";
+//
+//            /* Dictionary */
+//            $vowels_low          = 'aeiou';
+//            $consonants_low     = 'bcdfghjklnmpqrstvwxyz';
+//            $vowels_caps         = 'AEIOU';
+//            $consonants_caps    = 'BCDFGHIJKLNMPQRSTVWXYZ';
+//            $symbols             = '!@#$+=-_?<>()[]{}';
+//
+//            /* Generating */
+//            for ($i = 0; $i < $length; $i++) {
+//
+//                /* Make random number between 0 - 4 */
+//                $random = rand(0, 4);
+//
+//                if ($random == 0) {
+//
+//                    $generatedPassword .= $vowels_low[(rand() % strlen($vowels_low))];
+//
+//                } else if ($random == 1) {
+//
+//                    $generatedPassword .= $vowels_caps[(rand() % strlen($vowels_caps))];
+//
+//                } else if ($random == 2) {
+//
+//                    $generatedPassword .= $consonants_low[(rand() % strlen($consonants_low))];
+//
+//                } else if ($random == 3) {
+//
+//                    $generatedPassword .= $consonants_caps[(rand() % strlen($consonants_caps))];
+//
+//                } else {
+//
+//                    $generatedPassword .= $symbols[(rand() % strlen($symbols))];
+//
+//                }
+//
+//            }
+//
+//            return $generatedPassword;
+//
+//        }
+
+        /* Password Generate - MD5 */
         private function generatePassword($length) {
 
             /* setting random seed */
             srand(time(null));
 
             /* Results */
-            $generatedPassword = "";
+            $generatedPassword = rand();
+            $generatedPassword = md5($generatedPassword);
 
-            /* Dictionary */
-            $vowels_low          = 'aeiou';
-            $consonants_low     = 'bcdfghjklnmpqrstvwxyz';
-            $vowels_caps         = 'AEIOU';
-            $consonants_caps    = 'BCDFGHIJKLNMPQRSTVWXYZ';
-            $symbols             = '!@#$+=-_?<>()[]{}';
-
-            /* Generating */
-            for ($i = 0; $i < $length; $i++) {
-
-                /* Make random number between 0 - 4 */
-                $random = rand(0, 4);
-
-                if ($random == 0) {
-
-                    $generatedPassword .= $vowels_low[(rand() % strlen($vowels_low))];
-
-                } else if ($random == 1) {
-
-                    $generatedPassword .= $vowels_caps[(rand() % strlen($vowels_caps))];
-
-                } else if ($random == 2) {
-
-                    $generatedPassword .= $consonants_low[(rand() % strlen($consonants_low))];
-
-                } else if ($random == 3) {
-
-                    $generatedPassword .= $consonants_caps[(rand() % strlen($consonants_caps))];
-
-                } else {
-
-                    $generatedPassword .= $symbols[(rand() % strlen($symbols))];
-
-                }
-
-            }
-
-            return $generatedPassword;
+            return substr($generatedPassword, 0, $length);
 
         }
 
@@ -532,6 +546,12 @@
 
                                 /* error variable will tell you what is error */
                                 $this->error[]     = "Failed to send E-Mail.";
+
+                                /* FOR DEBUG */
+                                die($this->error);
+
+                                /* ON SERVICE */
+                                /* header("Location: 505.html");*/
 
                             }
 
