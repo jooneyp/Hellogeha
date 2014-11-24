@@ -63,3 +63,41 @@
     background: #C33 url(img/google.png) no-repeat left;
 
 }
+
+@media (max-width: 768px) {
+
+    .hidden-phone {
+
+        display: none;
+
+    }
+
+    .social-login-btn {
+
+        border: none;
+        box-shadow: none;
+
+        height: 32px;
+        width: 32px;
+
+    }
+
+    .facebook {
+
+        background: url(img/facebook.png) no-repeat left;
+
+    }
+
+    .kakaotalk {
+
+        background: url(img/kakao.png) no-repeat left;
+
+    }
+
+    .google {
+
+        background: url(img/google.png) no-repeat left;
+
+    }
+
+}
